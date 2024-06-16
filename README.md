@@ -19,7 +19,7 @@ flask run
 ## プログラム解説
 ### 1. 前提
 以下のライブラリ、モジュールをインポートすること。htmlファイルなど必要なものは各自用意し、templatesフォルダに保存すること。
-```Python
+```diff_Python:main.py
 import re
 import hashlib
 import sqlite3
@@ -27,13 +27,13 @@ from flaskr import app
 from flask import render_template, request, redirect, url_for, session
 ```
 ### 2. プログラム実行時に処理されるプログラム(対象ファイル：__init__.py)
-```Python:__init__.py
+```diff_Python:__init__.py
 from flask import Flask
 app = Flask(__name__)
 import flaskr.main
 ```
 ### 3. プログラム実行時にindex.htmlを表示する(対象ファイル：main.py)
-```Python:main.py
+```diff_Python:main.py
 @app.route('/')
 def index():
     return render_template(
@@ -43,7 +43,7 @@ def index():
 ### 4. index.htmlからadd.html(新規登録画面)に遷移する(対象ファイル：main.py, index.html)
 #### main.py
 上記のindex関数とほとんど同じ。render_template関数は画面遷移する時に使用する。
-```Python:main.py
+```diff_Python:main.py
 @app.route('/add')
 def add():
     return render_template(
@@ -52,7 +52,7 @@ def add():
 ```
 #### index.html
 aタグのhref属性やformタグのaction属性に以下の様に記述する。{{}}を使えばhtmlにPythonのコードを埋め込めるようになる。
-```HTML:index.html
+```diff_HTML:index.html
 <!-- aタグの場合 -->
 <a href="{{ url_for('add') }}">新規登録はこちら</a>
 <!-- formタグの場合 -->
@@ -69,7 +69,7 @@ aタグのhref属性やformタグのaction属性に以下の様に記述する�
 #### 補足(POSTとGETの使い分けについて)
 input要素で入力された値を取得、保存する時の通信方法はPOST、そうでない時(画面遷移など)はGETと覚えておく程度で良い。<br>
 もう少し詳しくPOSTとGETの違いについて知りたい場合はググるかIパスやFEなどの参考書を参照すると良い。
-```Python:main.py
+```diff_Python:main.py
 @app.route('/check', methods=['POST'])
 def check():
   userID = request.form['userID']
@@ -84,7 +84,7 @@ def check():
     mail=mail
   )
 ```
-```HTML:add.html
+```diff_HTML:add.html
 <!-- 以下の様に必ずname属性を記述すること。以下のコードの記述場所はどこでも良い -->
 <form method="post" action="{{ url_for('check') }}">
   <input type="text" name="userID">
@@ -94,7 +94,7 @@ def check():
   <input type="submit" value="確認">
 </form>
 ```
-```HTML:check.html
+```diff_HTML:check.html
 <!-- 以下はpタグで表示しているが、文字が表示できるタグであれば何でも良い -->
 <p>{{ userID }}</p>
 <p>{{ password1 }}</p>
@@ -112,7 +112,7 @@ def check():
 ##### 補足(render_templateとredirectの違い)
 実際に試してみると分かるが、render_templateは表示されているhtmlが同じものであろうと、urlには処理された関数名が表示される。<br>
 redirectはurl_for関数に記述してある関数を実行する為、リダイレクト先の関数名が表示される。
-```Python:main.py
+```diff_Python:main.py
 @app.route('/check', methods=['POST', 'GET']) # 敢えて、GETでの通信も許可してやる。
 def check():
   if request.method == 'POST':

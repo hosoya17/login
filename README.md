@@ -66,9 +66,6 @@ aタグのhref属性やformタグのaction属性に以下の様に記述する�
 ・input要素に入力された値はrequest.form['name属性']で取得できる。<br>
 ・遷移先の画面へ値を持っていくにはrender_template関数に変数名=値で持っていける。なお、分かりやすいように値は変数を参照し、変数名と値(変数を参照する場合)は同じ名前にすることをおすすめする。<br>
 ・遷移先の画面(html)に値を表示するには{{}}内に変数名を記述することで表示できる。
-#### 補足(POSTとGETの使い分けについて)
-input要素で入力された値を取得、保存する時の通信方法はPOST、そうでない時(画面遷移など)はGETと覚えておく程度で良い。<br>
-もう少し詳しくPOSTとGETの違いについて知りたい場合はググるかIパスやFEなどの参考書を参照すると良い。
 ```diff_Python:main.py
 @app.route('/check', methods=['POST'])
 def check():
@@ -100,11 +97,14 @@ def check():
 <p>{{ password1 }}</p>
 <p>{{ mail }}</p>
 ```
+#### 補足(POSTとGETの使い分けについて)
+input要素で入力された値を取得、保存する時の通信方法はPOST、そうでない時(画面遷移など)はGETと覚えておく程度で良い。<br>
+もう少し詳しくPOSTとGETの違いについて知りたい場合はググるかIパスやFEなどの参考書を参照すると良い。
 ### 6. セキュリティについて(対象ファイル：main.py, check.html)
 #### GETで通信された場合
 現状、ブラウザのurl欄にcheck.htmlのurl(localhost:5000/check)を入力するとエラーが表示される。<br>
 実際にクラッカーなどはこのエラーメッセージを読み攻撃手法を考えるらしいので、表示されないようにする。
-##### やり方
+#### やり方
 ・url欄に直接urlを入力してアクセスすると、通信方法はGETになる為、通信方法がGETの場合index.htmlなどにリダイレクトしてやれば良い。<br>
 ・@app.routeのmethods=['POST']に'GET'を追加する。<br>
 ・request.methodで通信方法を取得できるので、if文でPOSTでの通信の処理と、GETでの通信の処理を分けてやれば良い。<br>
@@ -115,11 +115,41 @@ redirectはurl_for関数に記述してある関数を実行する為、リダ�
 ```diff_Python:main.py
 @app.route('/check', methods=['POST', 'GET']) # 敢えて、GETでの通信も許可してやる。
 def check():
-  if request.method == 'POST':
+ + if request.method == 'POST':
     userID = request.form['userID']
     # 以下略
-  else:
-    return redirect(
-      url_for('index')
-    )
+ + else:
+  + return redirect(
+   + url_for('index')
+  + )
 ```
+#### 未入力チェック
+現状、何も入力していなくてもcheck.htmlに遷移してしまう。<br>
+空のデータがデータベースに保存されてしまうのはまずいので、何とかする。
+#### やり方
+・if文で変数に何も値が入っていないものを区別すれば良い。<br>
+・なぜ下記の条件式でできるのか分からない人は、Python falsyで検索すること。
+```diff_Python:main.py
+mail = request.form['mail']
++ if userID and password1 and password2 and mail:
+    return render_template(
+        'check.html',
+        userID=userID,
+        password1=password1,
+        mail=mail
+    )
+    # 以下略
+```
+#### パスワードの表示について
+現状、画面遷移先で入力されたパスワードが表示される。<br>
+セキュリティ的に良くないので●などで伏せて表示されるようにする。
+#### やり方
+・check.htmlにて乗算やlengthを使用し、パスワードの文字数分●を表示するようにする。
+```diff_HTML:check.html
+<p>{{ userID }}</p>
++ <p>{{ '●' * user.password|length }}</p>
+<p>{{ mail }}</p>
+```
+#### 補足
+このやり方もパスワードの文字数が分かってしまう為、万全なセキュリティ対策とは言えない。<br>
+もしこれよりもセキュリティを万全にしたい場合は各自で調べること。

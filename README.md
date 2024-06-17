@@ -205,6 +205,7 @@ return render_template(
 #### データベース作成
 ユーザーテーブルを作成する。テーブル定義は以下の通り。
 |No.|カラム名|データ型|Not Null|デフォルト|備考|
+----|----|----|----|----|----
 |1|userID|VARCHAR|NOT NULL||ユーザーのID|
 |2|hashed_password|VARCHAR|NOT NULL||ユーザーのハッシュ化されたパスワード|
 |3|mail|VARCHAR|NOT NULL||ユーザーのメールアドレス|

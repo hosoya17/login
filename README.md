@@ -125,7 +125,8 @@ def check():
 ```
 #### 未入力チェック
 現状、何も入力していなくてもcheck.htmlに遷移してしまう。<br>
-空のデータがデータベースに保存されてしまうのはまずいので、何とかする。
+空のデータがデータベースに保存されてしまうのはまずいので、何とかする。<br>
+入力されていないデータがある場合はadd.htmlに遷移し、エラーを表示するようにする。
 #### やり方
 ・if文で変数に何も値が入っていないものを区別すれば良い。<br>
 ・なぜ下記の条件式でできるのか分からない人は、Python falsyで検索すること。
@@ -138,7 +139,44 @@ mail = request.form['mail']
         password1=password1,
         mail=mail
     )
++ else:
+    + erro = "全ての項目を入力してください"
+    + return render_template(
+        + 'add.html',
+        + error=error
+    + )
     # 以下略
+```
+```diff_HTML:add.html
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+<form method="post" action="{{ url_for('check') }}">
+  <input type="text" name="userID">
+  <!-- 以下略 -->
+```
+#### パスワード、メールアドレスの形式チェック
+現状、パスワードとメールアドレスは何を入力してもcheck.htmlに遷移してしまう。<br>
+パスワードに関しては、強度の高いパスワードを設定させるようにするのが望ましい。<br>
+強度が低いパスワードを入力されたらエラーを表示するようにする。<br>
+確認用で同じパスワードを入力させ比較し、違うものが入力されていたらエラーを表示するようにする。<br>
+メールアドレスに関しては正しい形式でなければエラーを表示するようにする。
+#### やり方
+・if文で正規表現と比較する。<br>
+・以下パスワードは6文字以上半角英数字記号を使用できるようにしたものである。<br>
+```diff_Python:main.py
+mail = request.form['mail']
+
+password_pattern = r'^(?=.*[0-9a-zA-Z\W]).{6,}$'
+mail_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
++ if userID and password1 and password2 and mail and re.match(password_pattern, password1) and re.match(mail_pattern, mail):
+    # 省略
++ elif not(userID and password1 and password2 and mail):
+    error = "全ての項目を入力してください"
++ elif not(re.match(password_pattern, password1))
+    + error = "パスワードは次の条件を満たしている必要があります。半角英数字記号を使用、6文字以上"
++ elif not(re.match(mail_pattern, mail))
+    + error = "正しいメールアドレスの形式ではありません。"
 ```
 #### パスワードの表示について
 現状、画面遷移先で入力されたパスワードが表示される。<br>

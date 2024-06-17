@@ -164,6 +164,7 @@ mail = request.form['mail']
 #### やり方
 ・if文で正規表現と比較する。<br>
 ・以下パスワードは6文字以上半角英数字記号を使用できるようにしたものである。<br>
+※if文の条件式が長い為、横までスクロールして確認すること。
 ```diff_Python:main.py
 mail = request.form['mail']
 
@@ -202,3 +203,8 @@ return render_template(
 ### 7. 入力されたデータをデータベースに保存する
 データベースはSQLite3を使用する。
 #### データベース作成
+ユーザーテーブルを作成する。テーブル定義は以下の通り。
+|No.|カラム名|データ型|Not Null|デフォルト|備考|
+|1|userID|VARCHAR|NOT NULL||ユーザーのID|
+|2|hashed_password|VARCHAR|NOT NULL||ユーザーのハッシュ化されたパスワード|
+|3|mail|VARCHAR|NOT NULL||ユーザーのメールアドレス|

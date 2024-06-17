@@ -100,7 +100,7 @@ def check():
 #### 補足(POSTとGETの使い分けについて)
 input要素で入力された値を取得、保存する時の通信方法はPOST、そうでない時(画面遷移など)はGETと覚えておく程度で良い。<br>
 もう少し詳しくPOSTとGETの違いについて知りたい場合はググるかIパスやFEなどの参考書を参照すると良い。
-### 6. セキュリティについて(対象ファイル：main.py, check.html)
+### 6. セキュリティについて(対象ファイル：main.py, add.html, check.html)
 #### GETで通信された場合
 現状、ブラウザのurl欄にcheck.htmlのurl(localhost:5000/check)を入力するとエラーが表示される。<br>
 実際にクラッカーなどはこのエラーメッセージを読み攻撃手法を考えるらしいので、表示されないようにする。
@@ -169,14 +169,22 @@ mail = request.form['mail']
 
 password_pattern = r'^(?=.*[0-9a-zA-Z\W]).{6,}$'
 mail_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-+ if userID and password1 and password2 and mail and re.match(password_pattern, password1) and re.match(mail_pattern, mail):
++ if userID and password1 and password2 and mail and password1 == password2 and re.match(password_pattern, password1) and re.match(mail_pattern, mail):
     # 省略
++ elif password1 != password2:
+    error = "入力されたパスワードと確認用のパスワードが異なります"
 + elif not(userID and password1 and password2 and mail):
     error = "全ての項目を入力してください"
 + elif not(re.match(password_pattern, password1))
     + error = "パスワードは次の条件を満たしている必要があります。半角英数字記号を使用、6文字以上"
 + elif not(re.match(mail_pattern, mail))
     + error = "正しいメールアドレスの形式ではありません。"
+# if文の外に記述すること
+return render_template(
+    'add.html',
+    error=error
+    )
+# 以下略
 ```
 #### パスワードの表示について
 現状、画面遷移先で入力されたパスワードが表示される。<br>
@@ -191,3 +199,6 @@ mail_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 #### 補足
 このやり方もパスワードの文字数が分かってしまう為、万全なセキュリティ対策とは言えない。<br>
 もしこれよりもセキュリティを万全にしたい場合は各自で調べること。
+### 7. 入力されたデータをデータベースに保存する
+データベースはSQLite3を使用する。
+#### データベース作成

@@ -86,7 +86,7 @@
 
 # 注意
 
-スマホで閲覧する場合は[ここから(PDF)](https://drive.google.com/file/d/1wbYZPCvX6jnyKlmcqIHBeiQNaBFEeY8O/view?usp=sharing)閲覧すること。なお、おまけの画像のみGitHubでしか閲覧できない。
+スマホで閲覧する場合は[このリンク(PDF)](https://drive.google.com/file/d/1wbYZPCvX6jnyKlmcqIHBeiQNaBFEeY8O/view?usp=sharing)閲覧することをおすすめする。なお、おまけの画像のみGitHubでしか閲覧できない。
 
 # 実装内容
 

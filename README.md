@@ -77,8 +77,13 @@
       - [コマンドプロンプトで操作する](#コマンドプロンプトで操作する)
     - [Webアプリケーション開発でよく使うSQL文](#webアプリケーション開発でよく使うsql文)
       - [INSERT文](#insert文)
+        - [基本的な文法](#基本的な文法-2)
       - [UPDATE文](#update文)
+        - [爆裂重要事項](#爆裂重要事項-1)
+        - [基本的な文法](#基本的な文法-3)
+        - [WHERE句で条件式をつける](#where句で条件式をつける)
       - [DROP TABLE文](#drop-table文)
+        - [基本的な文法](#基本的な文法-4)
       - [補足(DELETE文について)](#補足delete文について)
   - [flask-loginについて](#flask-loginについて)
 
@@ -453,7 +458,7 @@ CREATE TABLE テーブル名(カラム名1 型名 PRIMARY KEY, カラム名2 型
 主キー以外でNULLを許さない場合、NOT NULLと記述する。
 
 ```SQL
-CREATE TABLE テーブル名(カラム名 型名 主キー, カラム名 型名 NOTNULL)
+CREATE TABLE テーブル名(カラム名 型名 主キー, カラム名 型名 NOT NULL)
 ```
 
 #### IF NOT EXISTSについて
@@ -463,7 +468,7 @@ PythonやPHPなどのプログラミング言語でデータベースを作成�
 IF NOT EXISTSを使用すれば上記のことが解決できる。
 
 ```SQL
-CREATE TABLE IF NOT EXISTS テーブル名(カラム名 型名 主キー, カラム名 型名 NOTNULL)
+CREATE TABLE IF NOT EXISTS テーブル名(カラム名 型名 主キー, カラム名 型名 NOT NULL)
 ```
 
 <div style="page-break-before:always"></div>
@@ -622,7 +627,7 @@ SELECT * FROM テーブル名;
 ##### WHERE句
 
 ```SQL
-SELECT * FROM テーブル名 WHERE カラム名 == 'example'; /* カラム名の値がexampleに一致するデータを取得する */
+SELECT * FROM テーブル名 WHERE カラム名 = 'example'; /* カラム名の値がexampleに一致するデータを取得する */
 SELECT * FROM テーブル名 WHERE カラム名 <> 'example'; /* カラム名の値がexampleに一致しないデータを取得する */
 SELECT * FROM テーブル名 WHERE カラム名 < 10; /* カラム名の値が10未満のデータを取得する */
 SELECT * FROM テーブル名 WHERE カラム名 <= 10; /* カラム名の値が10以下のデータを取得する */
@@ -727,23 +732,63 @@ sqlite3との対話モードになり、この状態でSQL文を実行できる�
 .exit
 ```
 
+<div style="page-break-before:always"></div>
+
 ### Webアプリケーション開発でよく使うSQL文
 
 サインアップ、サインイン機能では使わなかったSQL文の紹介
 
 #### INSERT文
 
+データを追加する際に使用する。
 
+##### 基本的な文法
+
+```SQL
+INSERT INTO テーブル名(カラム名1, カラム名2) VALUE(値1, 値2);
+```
 
 #### UPDATE文
 
+データを更新、編集する際に使用する。
 
+##### <span style="color: red">爆裂重要事項</span>
+Webアプリケーションの開発ではUPDATE文の文法は全て押さえていないと、ほぼ確でデータを壊すことになる。<br>
+UPDATE文に関する項目は基本的な文法だけでなく、必ず最後まで読むこと！
+
+##### 基本的な文法
+
+以下の例は該当するカラムの値を全て書き換えるものである。
+
+```SQL
+UPDATE テーブル名 SET カラム名 = 値;
+```
+
+##### WHERE句で条件式をつける
+
+以下の例はWHERE句で指定した条件式に該当するデータの値を書き換えるものである。
+
+```SQL
+UPDATE テーブル名 SET カラム名 = 値 WHERE カラム名 = "値";
+```
+
+<div style="page-break-before:always"></div>
 
 #### DROP TABLE文
 
+テーブルを削除する際に使用する。<br>
+頻繁に使うものではないが、開発中にテーブル定義が変更になったり、誤って挿入してはいけないデータを挿入してしまったりなど、テーブルを削除せざるを得ないことも多々ある。
 
+##### 基本的な文法
+
+```SQL
+DROP TABLE テーブル名;
+```
 
 #### 補足(DELETE文について)
+
+データを削除する際に使用するDELETE文だが、Webアプリケーションの開発では使わないことが多い。<br>
+実際にデータを削除する際は削除フラグを使用し、アプリ上で表示できなくし、データベース上ではデータを保持しているケースが多い。
 
 <div style="page-break-before:always"></div>
 

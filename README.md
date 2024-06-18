@@ -4,6 +4,7 @@
 
 - [サインアップ、サインイン機能の実装方法](#サインアップサインイン機能の実装方法)
 - [目次](#目次)
+- [注意](#注意)
 - [実装内容](#実装内容)
 - [環境構築](#環境構築)
   - [Flaskアプリ起動](#flaskアプリ起動)
@@ -82,6 +83,10 @@
   - [flask-loginについて](#flask-loginについて)
 
 <div style="page-break-before:always"></div>
+
+# 注意
+
+スマホで閲覧する場合は[ここから(PDF)](https://drive.google.com/file/d/1wbYZPCvX6jnyKlmcqIHBeiQNaBFEeY8O/view?usp=sharing)閲覧すること。なお、おまけの画像のみGitHubでしか閲覧できない。
 
 # 実装内容
 

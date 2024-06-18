@@ -16,7 +16,7 @@
     - [\_\_int\_\_.py](#__int__py)
   - [3. プログラム実行時にindex.htmlを表示する](#3-プログラム実行時にindexhtmlを表示する)
     - [main.py](#mainpy-1)
-  - [4. index.htmlからadd.html(新規登録画面)に遷移する(対象ファイル：main.py, index.html)](#4-indexhtmlからaddhtml新規登録画面に遷移する対象ファイルmainpy-indexhtml)
+  - [4. index.htmlからadd.html(新規登録画面)に遷移する](#4-indexhtmlからaddhtml新規登録画面に遷移する)
     - [main.py](#mainpy-2)
     - [index.html](#indexhtml)
   - [5. add.htmlのinput要素(テキストボックスなど)に入力された値を取得しcheck.html(確認画面)に表示する](#5-addhtmlのinput要素テキストボックスなどに入力された値を取得しcheckhtml確認画面に表示する)
@@ -24,7 +24,7 @@
     - [add.html](#addhtml)
     - [check.html](#checkhtml)
     - [補足(POSTとGETの使い分けについて)](#補足postとgetの使い分けについて)
-  - [6. セキュリティについて(対象ファイル：main.py, add.html, check.html)](#6-セキュリティについて対象ファイルmainpy-addhtml-checkhtml)
+  - [6. セキュリティについて](#6-セキュリティについて)
     - [GETで通信された場合](#getで通信された場合)
       - [やり方](#やり方)
         - [main.py](#mainpy-4)
@@ -70,7 +70,18 @@
       - [main.py](#mainpy-10)
     - [top.html](#tophtml)
 - [おまけ](#おまけ)
+  - [知っておいた方が良いこと](#知っておいた方が良いこと)
+    - [データベースの操作方法](#データベースの操作方法)
+      - [環境構築](#環境構築-1)
+      - [コマンドプロンプトで操作する](#コマンドプロンプトで操作する)
+    - [Webアプリケーション開発でよく使うSQL文](#webアプリケーション開発でよく使うsql文)
+      - [INSERT文](#insert文)
+      - [UPDATE文](#update文)
+      - [DROP TABLE文](#drop-table文)
+      - [補足(DELETE文について)](#補足delete文について)
   - [flask-loginについて](#flask-loginについて)
+
+<div style="page-break-before:always"></div>
 
 # 実装内容
 
@@ -106,6 +117,8 @@ export FLASK_ENV=development
 export FLASK_DEBUG=1
 python -m flask run
 ```
+
+<div style="page-break-before:always"></div>
 
 # プログラム解説
 
@@ -145,7 +158,9 @@ def index():
     )
 ```
 
-## 4. index.htmlからadd.html(新規登録画面)に遷移する(対象ファイル：main.py, index.html)
+<div style="page-break-before:always"></div>
+
+## 4. index.htmlからadd.html(新規登録画面)に遷移する
 
 ### main.py
 
@@ -171,6 +186,8 @@ aタグのhref属性やformタグのaction属性に以下の様に記述する�
   <input type="submit" value="新規登録">
 </form>
 ```
+
+<div style="page-break-before:always"></div>
 
 ## 5. add.htmlのinput要素(テキストボックスなど)に入力された値を取得しcheck.html(確認画面)に表示する
 
@@ -220,12 +237,14 @@ def check():
 <p>{{ mail }}</p>
 ```
 
+<div style="page-break-before:always"></div>
+
 ### 補足(POSTとGETの使い分けについて)
 
 input要素で入力された値を取得、保存する時の通信方法はPOST、そうでない時(画面遷移など)はGETと覚えておく程度で良い。<br>
 もう少し詳しくPOSTとGETの違いについて知りたい場合はググるかIパスやFEなどの参考書を参照すると良い。
 
-## 6. セキュリティについて(対象ファイル：main.py, add.html, check.html)
+## 6. セキュリティについて
 
 ### GETで通信された場合
 
@@ -257,6 +276,8 @@ def check():
 
 実際に試してみると分かるが、render_templateは表示されているhtmlが同じものであろうと、urlには処理された関数名が表示される。<br>
 redirectはurl_for関数に記述してある関数を実行する為、リダイレクト先の関数名が表示される。
+
+<div style="page-break-before:always"></div>
 
 ### 未入力チェック
 
@@ -300,6 +321,8 @@ else:
   <!-- 以下略 -->
 ```
 
+<div style="page-break-before:always"></div>
+
 ### パスワード、メールアドレスの形式チェック
 
 現状、パスワードとメールアドレスは何を入力してもcheck.htmlに遷移してしまう。<br>
@@ -339,6 +362,8 @@ return render_template(
 # 以下略
 ```
 
+<div style="page-break-before:always"></div>
+
 ### パスワードの表示について
 
 現状、画面遷移先で入力されたパスワードが表示される。<br>
@@ -361,9 +386,11 @@ check.htmlにて乗算やlengthを使用し、パスワードの文字数分●�
 このやり方もパスワードの文字数が分かってしまう為、万全なセキュリティ対策とは言えない。<br>
 もしこれよりもセキュリティを万全にしたい場合は各自で調べること。
 
+<div style="page-break-before:always"></div>
+
 ## 7. データベース作成
 
-データベースはSQLite3を使用する。<br>
+データベースはSQLiteを使用する。<br>
 ユーザーテーブルを作成する。テーブル定義は以下の通り。
 
 |No.|カラム名|データ型|Not Null|デフォルト|備考|
@@ -399,6 +426,8 @@ from flaskr import db
 db.create_expenses_table()
 ```
 
+<div style="page-break-before:always"></div>
+
 ### 補足(CREATE文の文法等々)
 
 #### 主キーについて
@@ -431,6 +460,8 @@ IF NOT EXISTSを使用すれば上記のことが解決できる。
 ```SQL
 CREATE TABLE IF NOT EXISTS テーブル名(カラム名 型名 主キー, カラム名 型名 NOTNULL)
 ```
+
+<div style="page-break-before:always"></div>
 
 ## 8. 入力されたデータをデータベースに保存する
 
@@ -482,6 +513,8 @@ if userID and password1 and password2 and mail and password1 == password2 and re
   # 以下略
 ```
 
+<div style="page-break-before:always"></div>
+
 #### check.html
 
 ```HTML
@@ -526,6 +559,8 @@ def comp():
 <!-- 登録が完了したことの文言を表示する -->
 ```
 
+<div style="page-break-before:always"></div>
+
 ## 9. ログイン処理
 
 - ユーザーIDとパスワードの比較はSQLのSELECT文で行う。
@@ -562,6 +597,8 @@ def top():
       error=error
     )
 ```
+
+<div style="page-break-before:always"></div>
 
 #### 補足(SELECT文の文法等々)
 
@@ -605,6 +642,8 @@ data = con.execute("SELECT * FROM table").fetchall() # 取得したデータを�
 data = con.execute("SELECT * FROM table").fetchone() # 最初の1件だけdataに格納する
 ```
 
+<div style="page-break-before:always"></div>
+
 ### GETの場合
 
 #### <span style="color: red">爆裂重要事項</span>
@@ -646,11 +685,66 @@ def top():
 <p>{{ userID }}</p>
 ```
 
+<div style="page-break-before:always"></div>
+
 # おまけ
+
+## 知っておいた方が良いこと
+
+### データベースの操作方法
+
+わざわざPythonで操作しなくても、コマンドプロンプトでデータベースを操作できる。<br>
+データの閲覧や、実装前にSQL文が正しく動作するかの確認などで使用すると便利。
+
+#### 環境構築
+
+手順が多い為、Googleで「SQLite パス」などで検索し、個人ブログなどから環境構築の方法を閲覧してください。<br>
+学校の場合は、環境構築不要です。
+
+#### コマンドプロンプトで操作する
+
+コマンドプロンプトで、データベースファイルがあるフォルダまで移動し以下のコマンドを実行する。
+
+```Shell
+sqlite3 データベースファイル名.db
+```
+
+sqlite3との対話モードになり、この状態でSQL文を実行できる。<br>
+なお、デフォルトの状態だとカラム名が表示されず見辛いが、以下のコマンドでカラム名を表示できるようになる。
+
+```Shell
+.mode column
+```
+
+終了する時は以下のコマンドを入力する。
+
+```Shell
+.exit
+```
+
+### Webアプリケーション開発でよく使うSQL文
+
+サインアップ、サインイン機能では使わなかったSQL文の紹介
+
+#### INSERT文
+
+
+
+#### UPDATE文
+
+
+
+#### DROP TABLE文
+
+
+
+#### 補足(DELETE文について)
+
+<div style="page-break-before:always"></div>
 
 ## flask-loginについて
 
-![hakase](https://github.com/hosoya17/login/assets/100053674/cd415016-a56e-4744-b031-e608b2bf50fc)
+![hakase/PDFでは画像は見れないよ！GitHubで見てね！](https://github.com/hosoya17/login/assets/100053674/cd415016-a56e-4744-b031-e608b2bf50fc)
 
 もう少し真面目に回答すると、flask-loginでできることは画像の通りだが、ログイン画面の作成、ログイン可能かどうかなどの処理は自分で作成しなければいけない。<br>
 つまり、今回の場合flask-loginを使用してもしなくてもさほど変わらない。<br>

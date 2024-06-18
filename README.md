@@ -650,7 +650,7 @@ def top():
 
 ## flask-loginについて
 
-![hakase](https://github.com/hosoya17/login/assets/100053674/1b33650c-8eb1-4183-83fe-d295077c8bd8)
+![hakase](https://github.com/hosoya17/login/assets/100053674/cd415016-a56e-4744-b031-e608b2bf50fc)
 
 もう少し真面目に回答すると、flask-loginでできることは画像の通りだが、ログイン画面の作成、ログイン可能かどうかなどの処理は自分で作成しなければいけない。<br>
 つまり、今回の場合flask-loginを使用してもしなくてもさほど変わらない。<br>

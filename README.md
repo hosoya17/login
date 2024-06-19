@@ -620,6 +620,8 @@ def comp():
 <!-- 登録が完了したことの文言を表示する -->
 ```
 
+<div style="page-break-before:always"></div>
+
 #### 補足(INSERT文の文法等々)
 
 データを追加する際に使用する。

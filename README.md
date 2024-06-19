@@ -393,9 +393,9 @@ elif password1 != password2:
   error = "入力されたパスワードと確認用のパスワードが異なります"
 elif not(userID and password1 and password2 and mail):
   error = "全ての項目を入力してください"
-elif not(re.match(password_pattern, password1))
+elif not(re.match(password_pattern, password1)):
   error = "パスワードは次の条件を満たしている必要があります。半角英数字記号を使用、6文字以上"
-elif not(re.match(mail_pattern, mail))
+elif not(re.match(mail_pattern, mail)):
   error = "正しいメールアドレスの形式ではありません。"
 # if文の外に記述すること
 return render_template(
@@ -555,7 +555,7 @@ if userID and password1 and password2 and mail and password1 == password2 and re
 
   user = {
     'userID' : userID,
-    'password' : password,
+    'password' : password1,
     'mail' : mail
   }
 
@@ -589,6 +589,10 @@ if userID and password1 and password2 and mail and password1 == password2 and re
 main.pyに以下を追記する。
 
 ```Python
+# import文の下あたり
+DATABASE = "データベース名.db"
+# 省略
+
 @app.route('/comp', methods=['POST', 'GET'])
 def comp():
   if request.method == 'POST':
@@ -790,9 +794,9 @@ def check():
       # 省略
     elif not(userID and password1 and password2 and mail):
       # 省略
-    elif not(re.match(password_pattern, password1))
+    elif not(re.match(password_pattern, password1)):
       # 省略
-    elif not(re.match(mail_pattern, mail))
+    elif not(re.match(mail_pattern, mail)):
       # 省略
     elif existing_user:
       error = "ユーザーIDが既に存在します。別のユーザーIDを設定してください。"
@@ -920,7 +924,7 @@ sqlalchemyというSQL文を記述せずにデータベースを操作できる�
 
 ### 概要
 
-![hakase/画像に適当な解説を載せてるけど、PDFでは画像は見れないよ！GitHubで見てね！](/image/hakase.jpg)
+![hakase/画像に適当な解説を載せてるけど、PDFでは画像は見れないよ！GitHubで見てね！](https://github.com/hosoya17/login/assets/100053674/9f895219-28ca-4246-bd55-1a2810527aa2)
 
 もう少し真面目に回答すると、flask-loginでできることは画像の通りだが、ログイン画面の作成、ログイン可能かどうかなどの処理は自分で作成しなければいけない。<br>
 つまり、今回の場合flask-loginを使用してもしなくてもさほど変わらない。<br>

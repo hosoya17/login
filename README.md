@@ -107,7 +107,7 @@
 
 # 注意事項
 
-基本的にPCでGitHubから閲覧することをおすすめするが、移動中など、どうしてもスマホで閲覧したい場合は[このリンク(PDF)](https://drive.google.com/file/d/1wbYZPCvX6jnyKlmcqIHBeiQNaBFEeY8O/view?usp=sharing)から閲覧することをおすすめする。なお、おまけの画像のみGitHubでしか閲覧できない。
+基本的にPCでGitHubから閲覧することをおすすめするが、移動中など、どうしてもスマホで閲覧したい場合は[このリンク(PDF)](https://drive.google.com/file/d/1wbYZPCvX6jnyKlmcqIHBeiQNaBFEeY8O/view?usp=sharing)から閲覧することをおすすめする。
 
 # 実装内容
 

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>ログイン</title>
+</head>
+<body>
+ <form action="{{ url_for('top') }}" method="post">
+  <input type="text" name="userID">
+  <input type="password" name="password">
+  <input type="submit" value="ログイン" class="loginBtn">
+ </form>
+ <a href="{{ url_for('add') }}">新規登録はこちら</a>
+</body>
+</html>

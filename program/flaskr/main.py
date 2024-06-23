@@ -127,3 +127,10 @@ def top():
     'index.html',
      error=error
    )
+  
+@app.route('/logout')
+def logout():
+ session.pop('userID', None)
+ return redirect(
+  url_for('index')
+ )

@@ -80,14 +80,17 @@
   - [10. 既存のユーザーIDやメールアドレスを登録させない処理](#10-既存のユーザーidやメールアドレスを登録させない処理)
     - [概要](#概要-5)
     - [main.py](#mainpy-11)
+  - [11. サインアウト](#11-サインアウト)
+    - [概要](#概要-6)
+    - [main.py](#mainpy-12)
 - [おまけ](#おまけ)
   - [知っておいた方が良いこと](#知っておいた方が良いこと)
     - [データベースの操作方法](#データベースの操作方法)
-      - [概要](#概要-6)
+      - [概要](#概要-7)
       - [環境構築](#環境構築-1)
       - [コマンドプロンプトで操作する](#コマンドプロンプトで操作する)
     - [Webアプリケーション開発でよく使うSQL文](#webアプリケーション開発でよく使うsql文)
-      - [概要](#概要-7)
+      - [概要](#概要-8)
       - [UPDATE文](#update文)
         - [爆裂重要事項](#爆裂重要事項-1)
         - [基本的な文法](#基本的な文法-3)
@@ -95,13 +98,16 @@
       - [DROP TABLE文](#drop-table文)
         - [基本的な文法](#基本的な文法-4)
       - [補足(DELETE文について)](#補足delete文について)
+  - [ファイル分割](#ファイル分割)
+    - [概要](#概要-9)
+    - [例](#例)
   - [sqlalchemyについて](#sqlalchemyについて)
-    - [概要](#概要-8)
+    - [概要](#概要-10)
     - [メリット](#メリット)
     - [デメリット](#デメリット)
     - [文法](#文法)
   - [flask-loginについて](#flask-loginについて)
-    - [概要](#概要-9)
+    - [概要](#概要-11)
 
 <div style="page-break-before:always"></div>
 
@@ -212,7 +218,7 @@ aタグのhref属性やformタグのaction属性に以下の様に記述する�
 <!-- aタグの場合 -->
 <a href="{{ url_for('add') }}">新規登録はこちら</a>
 <!-- formタグの場合 -->
-<form method="get" action="{{ url_for('add') }}>
+<form method="get" action="{{ url_for('add') }}">
   <input type="submit" value="新規登録">
 </form>
 ```
@@ -814,6 +820,28 @@ def check():
 
 <div style="page-break-before:always"></div>
 
+## 11. サインアウト
+
+### 概要
+
+- セッションを破棄してindex.htmlにリダイレクトする。
+- セッションは`session.pop('破棄したいセッション', None)`で破棄できる。
+
+### main.py
+
+main.pyに以下を追記する。
+
+```Python
+@app.route('/logout')
+def logout():
+  session.pop('userID', None)
+  return redirect(
+      url_for('index')
+  )
+```
+
+<div style="page-break-before:always"></div>
+
 # おまけ
 
 ## 知っておいた方が良いこと
@@ -898,6 +926,80 @@ DROP TABLE テーブル名;
 
 データを削除する際に使用するDELETE文だが、Webアプリケーションの開発では使わないことが多い。<br>
 実際にデータを削除する際は削除フラグを使用し、アプリ上で表示できなくし、データベース上ではデータを保持しているケースが多い。
+
+<div style="page-break-before:always"></div>
+
+## ファイル分割
+
+### 概要
+
+main.pyに全てのルーティングを記述するとコードの量が膨大になり可読性が低くなってしまう。  
+そこで、各機能ごとにファイルを分けることにより、可読性や保守性が高くすることができる。
+
+### 例
+
+- flaskrフォルダ直下にフォルダを作成する(作らなくても良いがファイルの数が多くなると保守性が低下するので作ることをおすすめする)
+- 各ファイルに関数を作る
+- main.pyでインポートする
+
+以下はサインインとサインアップとサインアウトをファイル分割したものである。  
+
+sing_up.py
+
+```Python
+import re
+import hashlib
+import sqlite3
+from flaskr import app
+from flask import render_template, request, redirect, url_for, session
+
+def sing_up(app):
+  # 関数の中身はGitHubのファイル分割後フォルダ参照
+```
+
+sing_in.py
+
+```Python
+import re
+import hashlib
+import sqlite3
+from flaskr import app
+from flask import render_template, request, redirect, url_for, session
+
+def sing_in(app):
+  # 関数の中身はGitHubのファイル分割後フォルダ参照
+```
+
+sing_out.py
+
+```Python
+import hashlib
+from flaskr import app
+from flask import redirect, url_for, session
+
+def sing_out(app):
+  # 関数の中身はGitHubのファイル分割後フォルダ参照
+```
+
+main.py
+
+```Python
+import re
+import hashlib
+import sqlite3
+from flaskr import app
+from flask import render_template, request, redirect, url_for, session
+
+from flaskr.routes.sing_up import sing_up
+from flaskr.routes.sing_in import sing_in
+from flaskr.routes.sing_out import sing_out
+
+@app.route('/')
+def index():
+  return render_template(
+    'index.html'
+  )
+```
 
 <div style="page-break-before:always"></div>
 
